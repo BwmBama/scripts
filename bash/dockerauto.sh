@@ -62,3 +62,20 @@ FREE_MEM_MIN="20"
 	# 脚本自更新
 	curl -o /etc/v3auto.sh https://raw.githubusercontent.com/BwmBama/scripts/master/bash/dockerauto.sh
     fi 
+    
+    # 更新 Caddy2
+    if  [ "$time" = "06:05" ]; then
+    sed -i 's|mjj:dd|mjj:caddy|g'  /root/docker-compose.yml
+    sed -i 's|:\/etc\/Caddyfile|:\/etc\/caddy\/Caddyfile|g'  /root/docker-compose.yml
+    sed -i 's|root \/srv\/www|root * \/srv\/www|g'  /root/Caddyfile
+    sed -i 's|log .\/caddy.log|log {\n    output file /srv/caddy.log {\n      roll_keep  3\n    }\n  \}\n  file_server|g'  /root/Caddyfile
+    sed -i 's|log .\/caddy443.log|log {\n    output file /srv/caddy.log {\n      roll_keep  3\n    }\n  \}\n  file_server|g'  /root/Caddyfile
+    sed -i 's|  proxy|  reverse_proxy|g'  /root/Caddyfile
+    sed -i '/websocket/d' /root/Caddyfile
+    sed -i 's|header_upstream -Origin|header_up -Origin|g'  /root/Caddyfile
+    sed -i 's|  gzip|  encode gzip|g'  /root/Caddyfile
+    sed -i '/cloudflare/d' /root/Caddyfile
+    sed -i '/    https:\/\/{host}{uri}/d' /root/Caddyfile
+    sed -i 's|  redir {|  redir https:\/\/{host}{uri}|g'  /root/Caddyfile
+    sed -i '/redir/{:a;n;/ }/d;/}/!ba}' /root/Caddyfile
+    fi
