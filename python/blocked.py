@@ -33,11 +33,11 @@ def get_config():
     return config
 
 #中国联通
-CUCC = ('10010.com',80)
+CUCC = ('www.10010.com',80)
 #中国移动
 CMCC = ('www.10086.cn',80)
 #中国电信
-CTCC = ('www.chinatelecom.com.cn',80)
+CTCC = ('www.189.cn',80)
     
 def write_config(path, str):
     with open(path, 'w') as f:
