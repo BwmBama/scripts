@@ -57,13 +57,9 @@ FREE_MEM_MIN="20"
     if  [ "$time" = "06:00" ]; then 
         # 更新镜像
 	/usr/local/bin/docker-compose -f /root/docker-compose.yml pull
+	/usr/local/bin/docker-compose -f /root/docker-compose.yml down
 	/usr/local/bin/docker-compose -f /root/docker-compose.yml up -d
 	docker rmi $(docker images | grep "none" | awk '{print $3}')
 	# 脚本自更新
 	curl -o /etc/v3auto.sh https://raw.githubusercontent.com/BwmBama/scripts/master/bash/dockerauto.sh
     fi 
-
-    # 删除Caddy工作目录挂载
-    if  [ "$time" = "06:05" ]; then
-        sed -i 's|- ./.caddy:/root/.caddy|#      - ./.caddy:/root/.caddy|g'  /root/docker-compose.yml
-    fi
