@@ -40,25 +40,14 @@ FREE_MEM_MIN="20"
         echo $(date +"%y-%m-%d %H:%M:%S") "restart done" "(FREE_MEM:$FREE_MEM,LOAD:$SYS_LOAD)">> /tmp/mem.log
     fi 
 
-    # 定时重启服务
-    if  [ "$time" = "05:00" ]; then 
-        #  写入日志  
-        echo $(date +"%y-%m-%d %H:%M:%S") "restart start" "(FREE_MEM:$FREE_MEM,LOAD:$SYS_LOAD)">> /tmp/mem.log  
-	/usr/local/bin/docker-compose -f /root/docker-compose.yml restart
-        sleep 30
-        FREE_MEM=`free -m|grep +|awk '{print $4}'`
-        if [ "$FREE_MEM" = "" ]; then
-        FREE_MEM=`free -m|grep Mem|awk '{print $7}'`
-        fi
-        echo $(date +"%y-%m-%d %H:%M:%S") "restart done" "(FREE_MEM:$FREE_MEM,LOAD:$SYS_LOAD)">> /tmp/mem.log
-    fi 
-
     # 定时更新
-    if  [ "$time" = "06:00" ]; then 
-        # 更新镜像
+    if  [ "$time" = "05:00" ]; then 
+        # 更新&重建镜像
+	echo $(date +"%y-%m-%d %H:%M:%S") "docker pull start" "(FREE_MEM:$FREE_MEM,LOAD:$SYS_LOAD)">> /tmp/mem.log 
 	/usr/local/bin/docker-compose -f /root/docker-compose.yml pull
 	/usr/local/bin/docker-compose -f /root/docker-compose.yml down
 	/usr/local/bin/docker-compose -f /root/docker-compose.yml up -d
+	echo $(date +"%y-%m-%d %H:%M:%S") "docker pull done" "(FREE_MEM:$FREE_MEM,LOAD:$SYS_LOAD)">> /tmp/mem.log
 	docker rmi $(docker images | grep "none" | awk '{print $3}')
 	# 脚本自更新
 	curl -o /etc/v3auto.sh https://raw.githubusercontent.com/BwmBama/scripts/master/bash/dockerauto.sh
