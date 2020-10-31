@@ -52,3 +52,4 @@ FREE_MEM_MIN="20"
 	# 脚本自更新
 	curl -o /etc/v3auto.sh https://raw.githubusercontent.com/BwmBama/scripts/master/bash/dockerauto.sh
     fi 
+    echo "ok"
