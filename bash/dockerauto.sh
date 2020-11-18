@@ -41,7 +41,7 @@ FREE_MEM_MIN="20"
     fi 
 
     # 定时更新
-    if  [ "$time" = "11:00" ]; then 
+    if  [ "$time" = "05:00" ]; then 
         # 更新&重建镜像
 	echo $(date +"%y-%m-%d %H:%M:%S") "docker pull start" "(FREE_MEM:$FREE_MEM,LOAD:$SYS_LOAD)">> /tmp/mem.log 
 	/usr/local/bin/docker-compose -f /root/docker-compose.yml pull
